@@ -5,7 +5,6 @@ networks:
     driver: bridge
 
 volumes:
-  # TODO: update below to environment variables with specific mount points
   files:
     driver: local
     driver_opts:
