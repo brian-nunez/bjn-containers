@@ -8,10 +8,22 @@ volumes:
   # TODO: update below to environment variables with specific mount points
   files:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${OWNCLOUD_DATA_DIR}
   mysql:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${OWNCLOUD_MYSQL_DATA_DIR}
   redis:
     driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${OWNCLOUD_REDIS_DATA_DIR}
 
 services:
   owncloud:
