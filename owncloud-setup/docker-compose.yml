@@ -93,4 +93,3 @@ services:
       - redis:/data
     networks:
       - own_cloud_network
-
