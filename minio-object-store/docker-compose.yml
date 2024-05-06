@@ -9,6 +9,6 @@ services:
     volumes:
       - ${X_MINIO_VOLUME_PATH}:/data
     environment:
-      MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
     command: server /data --console-address ":${X_MINIO_BROWSER_PORT}"
