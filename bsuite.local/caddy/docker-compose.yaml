@@ -1,0 +1,24 @@
+services:
+  caddy:
+    image: caddy
+    container_name: caddy
+    restart: unless-stopped
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./html:/srv/html
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - "8080:80"
+      - "8443:443"
+    networks:
+      - dev_application
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  dev_application:
+    name: dev_application
+    external: true

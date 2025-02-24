@@ -1,0 +1,9 @@
+http://cloud.blinux.local {
+    root * /srv/html
+    file_server
+
+    @auth_root path /auth
+    rewrite @auth_root /auth/
+
+    reverse_proxy /auth/* keycloak:8080
+}
