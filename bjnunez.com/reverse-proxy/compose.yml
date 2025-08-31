@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    env_file:
+      - .env
     networks:
       - gateway
 
@@ -22,6 +24,8 @@ services:
       - UPTIME_HOST=${UPTIME_HOST}
       - UPTIME_IP=${UPTIME_IP}
       - UPTIME_PORT=${UPTIME_PORT}
+    env_file:
+      - .env
     volumes:
       - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./config/routes:/etc/traefik/routes:ro

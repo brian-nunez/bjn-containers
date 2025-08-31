@@ -4,12 +4,12 @@ http:
       headers:
         customRequestHeaders:
           X-Forwarded-Proto: "https"
-          X-Forwarded-Host: "{{ env \"KEYCLOAK_HOST\" }}"
+          X-Forwarded-Host: {{ env "KEYCLOAK_HOST" }}
           X-Forwarded-Port: "443"
 
   routers:
     keycloak:
-      rule: "Host(`{{ env \"KEYCLOAK_HOST\" }}`)"
+      rule: Host(`{{ env "KEYCLOAK_HOST" }}`)
       service: keycloak-svc
       entryPoints: [web]
       middlewares:
@@ -19,4 +19,4 @@ http:
     keycloak-svc:
       loadBalancer:
         servers:
-          - url: "http://{{ env \"KEYCLOAK_IP\" }}:{{ env \"KEYCLOAK_PORT\" }}"
+          - url: 'http://{{ env "KEYCLOAK_IP" }}:{{ env "KEYCLOAK_PORT" }}'

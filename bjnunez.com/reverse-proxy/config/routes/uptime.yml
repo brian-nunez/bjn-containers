@@ -1,7 +1,7 @@
 http:
   routers:
     uptime:
-      rule: "Host(`{{ env \"UPTIME_HOST\" }}`)"
+      rule: 'Host(`{{ env "UPTIME_HOST" }}`)'
       service: uptime-svc
       entryPoints: [web]
 
@@ -9,4 +9,4 @@ http:
     uptime-svc:
       loadBalancer:
         servers:
-          - url: "http://{{ env \"UPTIME_IP\" }}:{{ env \"UPTIME_PORT\" }}"
+          - url: 'http://{{ env "UPTIME_IP" }}:{{ env "UPTIME_PORT" }}'
