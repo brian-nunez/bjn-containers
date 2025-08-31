@@ -1,0 +1,33 @@
+services:
+  cloudflare_tunnels:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflare_tunnels
+    command: tunnel --no-autoupdate run
+    restart: unless-stopped
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - gateway
+
+  traefik:
+    image: traefik:v2.11
+    container_name: web_traffic
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - KEYCLOAK_HOST=${KEYCLOAK_HOST}
+      - KEYCLOAK_IP=${KEYCLOAK_IP}
+      - KEYCLOAK_PORT=${KEYCLOAK_PORT}
+      - UPTIME_HOST=${UPTIME_HOST}
+      - UPTIME_IP=${UPTIME_IP}
+      - UPTIME_PORT=${UPTIME_PORT}
+    volumes:
+      - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./config/routes:/etc/traefik/routes:ro
+    networks:
+      - gateway
+
+networks:
+  gateway:
+    external: true
