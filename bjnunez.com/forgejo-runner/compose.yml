@@ -1,0 +1,36 @@
+services:
+  forgejo-runner:
+    image: ${FORGEJO_RUNNER_IMAGE}
+    container_name: ${FORGEJO_RUNNER_CONTAINER_NAME}
+    restart: unless-stopped
+    environment:
+      FORGEJO_INSTANCE: ${FORGEJO_INSTANCE}
+      FORGEJO_RUNNER_TOKEN: ${FORGEJO_RUNNER_TOKEN}
+      FORGEJO_RUNNER_NAME: ${FORGEJO_RUNNER_NAME}
+      FORGEJO_LABELS: ${FORGEJO_LABELS}
+    group_add:
+      - 988
+    env_file:
+      - .env
+    entrypoint: ["/bin/sh", "-c"]
+    volumes:
+      - ${FORGEJO_RUNNER_VOLUME_PATH}:/data
+      - ${FORGEJO_RUNNER_DOCKER_SOCKET}:/var/run/docker.sock
+    command:
+      - |
+        set -eu
+        mkdir -p /data
+        if [ ! -f /data/.runner ]; then
+          echo ">>> Generating config"
+          forgejo-runner generate-config > /data/config.yaml
+          echo ">>> Registering runner"
+          forgejo-runner register \
+            --no-interactive \
+            --instance "$$FORGEJO_INSTANCE" \
+            --token "$$FORGEJO_RUNNER_TOKEN" \
+            --name "$$FORGEJO_RUNNER_NAME" \
+            --labels "$$FORGEJO_LABELS" \
+            --config /data/config.yaml
+        fi
+        echo ">>> Starting daemon"
+        exec forgejo-runner daemon --config /data/config.yaml
